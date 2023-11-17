@@ -328,7 +328,7 @@ void ImageStats(Image img, uint8* min, uint8* max) { ///
   assert (img != NULL);
   // Insert your code here!
   uint8 minTemp, maxTemp;
-  int size = sizeof(img) / sizeof(uint8);
+  int size = sizeof(*img) / sizeof(uint8);
 
   uint8* pixel = img->pixel;
   if (pixel[0] > pixel[1])  
@@ -347,7 +347,7 @@ void ImageStats(Image img, uint8* min, uint8* max) { ///
     if (pixel[i] > maxTemp)      
       maxTemp = pixel[i];
    
-    else if (pixel[i] <  min)      
+    else if (pixel[i] <  minTemp)      
       minTemp = pixel[i];
   }
 
