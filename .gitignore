@@ -60,3 +60,4 @@ dkms.conf
 
 # IDE files
 .idea
+.vscode
