@@ -185,6 +185,9 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   img->height = height;
   img->maxval = maxval;
 
+  //Create pixel data
+  img->pixel = malloc(sizeof(uint8) * width * height);
+
   return img;
 // 
   
@@ -204,7 +207,14 @@ void ImageDestroy(Image* imgp) { ///
     return;
   }
 
-  free(imgp);
+  //Free memory from every component
+  free((*imgp)->height);
+  free((*imgp)->width);
+  free((*imgp)->pixel);
+  free((*imgp)->maxval);
+  
+  free(*imgp);
+  imgp = NULL;
   
   assert(imgp == NULL);
   assert(error == errno);
