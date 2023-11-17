@@ -207,11 +207,8 @@ void ImageDestroy(Image* imgp) { ///
     return;
   }
 
-  //Free memory from every component
-  free((*imgp)->height);
-  free((*imgp)->width);
+  // Free the pixels array
   free((*imgp)->pixel);
-  free((*imgp)->maxval);
   
   free(*imgp);
   imgp = NULL;
