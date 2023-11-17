@@ -185,7 +185,7 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
   img->height = height;
   img->maxval = maxval;
 
-  return success;
+  return img;
 // 
   
 }
@@ -198,6 +198,16 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
 void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
+  int error = errno;
+
+  if (imgp == NULL) {
+    return;
+  }
+
+  free(imgp);
+  
+  assert(imgp == NULL);
+  assert(error == errno);
 }
 
 
