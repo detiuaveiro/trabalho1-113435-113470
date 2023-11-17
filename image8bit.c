@@ -327,32 +327,32 @@ int ImageMaxval(Image img) { ///
 void ImageStats(Image img, uint8* min, uint8* max) { ///
   assert (img != NULL);
   // Insert your code here!
-  uint8 min,max;
+  uint8 minTemp, maxTemp;
   int size = sizeof(img) / sizeof(uint8);
 
   uint8* pixel = img->pixel;
-   if (pixel[0] > pixel[1])  
+  if (pixel[0] > pixel[1])  
   {
-      max = pixel[0];
-      min = pixel[1];
+      maxTemp = pixel[0];
+      minTemp = pixel[1];
   }  
   else
   {
-      max = pixel[1];
-      min = pixel[0];
+      maxTemp = pixel[1];
+      minTemp = pixel[0];
   }    
  
   for (int i = 2; i<size; i++)
   {
-    if (pixel[i] > max)      
-      max = pixel[i];
+    if (pixel[i] > maxTemp)      
+      maxTemp = pixel[i];
    
     else if (pixel[i] <  min)      
-      min = pixel[i];
+      minTemp = pixel[i];
   }
 
-  *min = min;
-  *max = max;
+  *min = minTemp;
+  *max = maxTemp;
 }
 
 /// Check if pixel position (x,y) is inside img.
