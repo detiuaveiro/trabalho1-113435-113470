@@ -330,6 +330,32 @@ int ImageMaxval(Image img) { ///
 void ImageStats(Image img, uint8* min, uint8* max) { ///
   assert (img != NULL);
   // Insert your code here!
+  uint8 min,max;
+  int size = sizeof(img) / sizeof(uint8);
+
+  uint8* pixel = img->pixel;
+   if (pixel[0] > pixel[1])  
+  {
+      max = pixel[0];
+      min = pixel[1];
+  }  
+  else
+  {
+      max = pixel[1];
+      min = pixel[0];
+  }    
+ 
+  for (int i = 2; i<size; i++)
+  {
+    if (pixel[i] > max)      
+      max = pixel[i];
+   
+    else if (pixel[i] <  min)      
+      min = pixel[i];
+  }
+
+  *min = min;
+  *max = max;
 }
 
 /// Check if pixel position (x,y) is inside img.
@@ -357,6 +383,16 @@ int ImageValidRect(Image img, int x, int y, int w, int h) { ///
 static inline int G(Image img, int x, int y) {
   int index;
   // Insert your code here!
+
+  //(x,y) = (10,1) index = 110
+  // (x,y) = (10,0) index = 10
+  if(y == 0) {
+    index = x;
+  }
+  else {
+    index = 100 * y + x;
+  }
+
   assert (0 <= index && index < img->width*img->height);
   return index;
 }
@@ -392,6 +428,15 @@ void ImageSetPixel(Image img, int x, int y, uint8 level) { ///
 void ImageNegative(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+
+  int size = img->height * img->width;
+
+  //Negative = maxVal - pixel
+
+  for(int i = 0; i < size;i++) {
+    img->pixel[i] = img->maxval - img->pixel[i];
+  }
+
 }
 
 /// Apply threshold to image.
