@@ -365,6 +365,24 @@ int ImageValidPos(Image img, int x, int y) { ///
 int ImageValidRect(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   // Insert your code here!
+  // Create success variable 
+  int success;
+
+  // Check if coordinates are inside the image
+  success = check(ImageValidPos(img, x, y), "Coordinates are not inside the image");
+  // End if outside of image
+  if (!success) return success;
+ 
+  // Check if x + w won't surpass the limits of the image
+  if (x + w > img->width || x + w < 0) {
+    success = 0;
+  // Check if y + h won't surpass the limits of the image
+  } else if (y + h > img->height || y + h < 0) {
+    success = 0;
+  }
+
+  // Return True or False
+  return success;
 }
 
 /// Pixel get & set operations
