@@ -530,14 +530,9 @@ Image ImageMirror(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
   // Create a copy of the image, preserving the original image
-  int success;
   Image mirrored = ImageCreate(img->width, img->height, img->maxval);
 
-  // Create width and height
-  // int width = img->width - 1;
-  // int height = img->height - 1;
-
-  // Copy the first half of the image to the second half of the new image
+  // Change first pixel with last, and so on
   for (int y = 0; y < img->height; y++) {
     for (int x = 0; x < img->width; x++) {
       ImageSetPixel(mirrored, x, y, ImageGetPixel(img, img->width - x - 1, y));
