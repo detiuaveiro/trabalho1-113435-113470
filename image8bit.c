@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "instrumentation.h"
@@ -405,7 +406,7 @@ static inline int G(Image img, int x, int y) {
     index = x;
   }
   else {
-    index = 100 * y + x;
+    index = x + img->width * y;
   }
 
   assert (0 <= index && index < img->width*img->height);
@@ -528,6 +529,23 @@ Image ImageRotate(Image img) { ///
 Image ImageMirror(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  // Create a copy of the image, preserving the original image
+  int success;
+  Image mirrored = ImageCreate(img->width, img->height, img->maxval);
+
+  // Create width and height
+  // int width = img->width - 1;
+  // int height = img->height - 1;
+
+  // Copy the first half of the image to the second half of the new image
+  for (int y = 0; y < img->height; y++) {
+    for (int x = 0; x < img->width; x++) {
+      ImageSetPixel(mirrored, x, y, ImageGetPixel(img, img->width - x - 1, y));
+    }
+  }
+  assert(mirrored != NULL);
+  return mirrored;
+  
 }
 
 /// Crop a rectangular subimage from img.
