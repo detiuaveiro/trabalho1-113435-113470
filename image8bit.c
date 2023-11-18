@@ -517,6 +517,17 @@ void ImageBrighten(Image img, double factor) { ///
 Image ImageRotate(Image img) { ///
   assert (img != NULL);
   // Insert your code here!
+  // Create a copy of the image, preserving the original image
+  Image rotated = ImageCreate(img->width, img->height, img->maxval);
+
+  // Grab original image line, set as new image row
+  for (int y = 0; y < img->height; y++) {
+    for (int x = 0; x < img->width; x++) {
+      ImageSetPixel(rotated,y, img->width - 1 - x, ImageGetPixel(img, x, y));
+    }
+  }
+
+  return rotated;
 }
 
 /// Mirror an image = flip left-right.
