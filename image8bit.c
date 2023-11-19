@@ -202,20 +202,19 @@ Image ImageCreate(int width, int height, uint8 maxval) { ///
 void ImageDestroy(Image* imgp) { ///
   assert (imgp != NULL);
   // Insert your code here!
-  int error = errno;
 
-  if (imgp == NULL) {
+  if (*imgp == NULL) {
     return;
   }
 
   // Free the pixels array
   free((*imgp)->pixel);
-  
+  (*imgp)->pixel = NULL;
+
   free(*imgp);
-  imgp = NULL;
+  *imgp = NULL;
   
-  assert(imgp == NULL);
-  assert(error == errno);
+  assert(*imgp == NULL);
 }
 
 
@@ -718,7 +717,44 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 /// The image is changed in-place.
 void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
+  // Create an image copy
+  Image blurred = ImageCreate(img->width, img->height, img->maxval);
 
+  // Assert that dx and dy are valid numbers
+  assert(0 <= dx && dx <= PixMax);
+  // Assert that image is not null
+  assert(img != NULL);
+
+  // Go through all pixels in the image
+  for(int y = 0; y < img->height; y++) {
+    for(int x = 0; x < img->width; x++) {
+      int sum = 0;
+      int npixels = 0;
+      // Go through all pixels in the rectangle
+      for(int j = y - dy; j <= y + dy; j++) {
+        for(int i = x - dx; i <= x + dx; i++) {
+          // Check if pixel is inside the image
+          if(ImageValidPos(img, i, j)) {
+            // Add pixel value to sum
+            sum += ImageGetPixel(img, i, j);
+            // Increment number of pixels
+            npixels++;
+          }
+        }
+      }
+      // Set pixel value to mean of pixels in rectangle
+      ImageSetPixel(blurred, x, y, (sum + npixels / 2) / npixels);
+    }
+  }
+
+  // Copy blurred pixels to original image
+  for(int y = 0; y < img->height; y++) {
+    for(int x = 0; x < img->width; x++) {
+      ImageSetPixel(img, x, y, ImageGetPixel(blurred, x, y));
+    }
+  }
+
+  // Destroy blurred image
+  ImageDestroy(&blurred);
 
 }
-
