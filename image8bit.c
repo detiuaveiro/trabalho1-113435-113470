@@ -641,6 +641,19 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
 
+  //Save original coordinates 
+  int ogX = x;
+  
+  //Starting from pos(x,y) we blend img2 pixels with img1 
+  //i = x; j = y
+  for(int j =0;j<img2->height;j++) {
+    for(int i = 0;i < img2->width;i++) {
+      ImageSetPixel(img1, x, y, (double)ImageGetPixel(img2, i, j) * alpha + (double)ImageGetPixel(img1, x, y) * (1 - alpha) + 0.5);
+      x++;
+    }
+    x = ogX;
+    y++;
+  }
 
 }
 
@@ -652,6 +665,25 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2) { ///
   assert (img2 != NULL);
   assert (ImageValidPos(img1, x, y));
   // Insert your code here!
+
+  //Save original coordinates 
+  int ogX = x;
+  
+  //Starting from pos(x,y) we compare img2 pixels with img1 
+  //i = x; j = y
+  //get pixel fromg img1 on the desire location (x,y) and compares to 
+  //pixel from img2 starting from top left to bottom right
+  for(int j =0;j<img2->height;j++) {
+    for(int i = 0;i < img2->width;i++) {
+      if (ImageGetPixel(img1,x ,y) != ImageGetPixel(img2, i, j)) {return 0;}
+      x++;
+    }
+    x = ogX;
+    y++;
+  }
+
+  //img2 matches subimage of img1
+  return 1;
 }
 
 /// Locate a subimage inside another image.
@@ -662,6 +694,19 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
   assert (img1 != NULL);
   assert (img2 != NULL);
   // Insert your code here!
+
+  for(int y = 0; y < img1->height; y++) {
+    for(int x = 0; x < img1->width; x++) {
+      if( ImageMatchSubImage(img1, x, y, img2) == 1) {
+        *px = x;
+        *py = y;
+        return 1;
+      } ;
+
+    }
+  }
+
+  return 0;
 }
 
 
@@ -673,5 +718,7 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 /// The image is changed in-place.
 void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
+
+
 }
 
