@@ -570,6 +570,31 @@ Image ImageCrop(Image img, int x, int y, int w, int h) { ///
   assert (img != NULL);
   assert (ImageValidRect(img, x, y, w, h));
   // Insert your code here!
+
+  //Check if rectangle is inside original image
+  int success = 
+  check( ImageValidRect(img, x, y, w, h), "Rectangle not inside image");
+
+  if(!success) {
+    errsave = errno;
+    return NULL;
+  }
+
+  //Create new image
+  Image cropImg = ImageCreate(w, h, img->maxval);
+
+  //Set pixels from left to right, top to bottom
+  // i = x; j = y
+  for(int j = 0; j< w; j++) {
+    for(int i = 0;i< h;i++) {
+      ImageSetPixel(cropImg, i, j, ImageGetPixel(img, x, y));
+      x++;
+    }
+    y++;
+  }
+
+  assert(cropImg != NULL);
+  return cropImg;
 }
 
 
@@ -584,6 +609,16 @@ void ImagePaste(Image img1, int x, int y, Image img2) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+
+  //Starting from pos(x,y) we replace img1 pixels with img2 
+  //i = x; j = y
+  for(int j =0;j<img2->width;j++) {
+    for(int i = 0;i < img2->height;i++) {
+      ImageSetPixel(img1, x, y, ImageGetPixel(img2, i, j));
+      x++;
+    }
+    y++;
+  }
 }
 
 /// Blend an image into a larger image.
@@ -597,6 +632,8 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
+
+  
 }
 
 /// Compare an image to a subimage of a larger image.
