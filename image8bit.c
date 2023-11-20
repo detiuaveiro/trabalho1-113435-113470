@@ -331,6 +331,7 @@ void ImageStats(Image img, uint8* min, uint8* max) { ///
   int size = sizeof(*img) / sizeof(uint8);
 
   uint8* pixel = img->pixel;
+  //Initialize max and min
   if (pixel[0] > pixel[1])  
   {
       maxTemp = pixel[0];
@@ -342,6 +343,7 @@ void ImageStats(Image img, uint8* min, uint8* max) { ///
       minTemp = pixel[0];
   }    
  
+  //Iteration to find a max value and min value in the array
   for (int i = 2; i<size; i++)
   {
     if (pixel[i] > maxTemp)      
@@ -447,7 +449,7 @@ void ImageNegative(Image img) { ///
   int size = img->height * img->width;
 
   //Negative = maxVal - pixel
-
+  //Change each pixel to maxvalue - it's orginal value
   for(int i = 0; i < size;i++) {
     img->pixel[i] = img->maxval - img->pixel[i];
   }
@@ -463,6 +465,7 @@ void ImageThreshold(Image img, uint8 thr) { ///
   // Assert that thr is a valid number
   assert(0 <= thr && thr <= PixMax);
 
+  //Change each pixel to maxval or 0 if it's value is equal or above or below respectively
   for (int i = 0; i <= img->width * img->height; i++) {
     if (img->pixel[i] >= thr) {
       img->pixel[i] = img->maxval;
@@ -481,6 +484,9 @@ void ImageBrighten(Image img, double factor) { ///
   assert (img != NULL);
   assert (factor >= 0.0);
   // Insert your code here!
+  //Change each pixel by it's value multiplied with factor
+  // + 0.5 to round the final result
+  //if the result is above maxval, then the pixel is changed to maxval
   for (int i = 0; i <= img->width * img->height; i++) {
     if ((double)img->pixel[i] * factor > 255) {
       img->pixel[i] = img->maxval;
@@ -570,32 +576,26 @@ Image ImageCrop(Image img, int x, int y, int w, int h) { ///
   assert (ImageValidRect(img, x, y, w, h));
   // Insert your code here!
 
-  //Check if rectangle is inside original image
+  //Create Cropped Image
+  Image cropImg = NULL;
   int success = 
-  check( ImageValidRect(img, x, y, w, h), "Rectangle not inside image");
+  check((cropImg = ImageCreate(w, h, img->maxval)) != NULL, "Failed to create cropped image") ;
 
+  //If failed, return NULL
   if(!success) {
     errsave = errno;
     return NULL;
   }
 
-  //Create new image
-  Image cropImg = ImageCreate(w, h, img->maxval);
-
-  //Save orginal coordinates
-  int ogX = x;
-
   //Set pixels from left to right, top to bottom
   // i = x; j = y
   for(int j = 0; j< h; j++) {
     for(int i = 0;i< w;i++) {
-      ImageSetPixel(cropImg, i, j, ImageGetPixel(img, x, y));
-      x++;
+      ImageSetPixel(cropImg, i, j, ImageGetPixel(img, x + i, y + j));
     }
-    x = ogX;
-    y++;
   }
 
+  //Ensure cropImg isn't NULL
   assert(cropImg != NULL);
   return cropImg;
 }
@@ -612,19 +612,14 @@ void ImagePaste(Image img1, int x, int y, Image img2) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
-
-  //Save original coordinates 
-  int ogX = x;
   
   //Starting from pos(x,y) we replace img1 pixels with img2 
   //i = x; j = y
+  //Usage of ImageSetPixel to set pixel in img1 starting from pos(x,y) and add the pos in img2 with each iteration
   for(int j =0;j<img2->height;j++) {
     for(int i = 0;i < img2->width;i++) {
-      ImageSetPixel(img1, x, y, ImageGetPixel(img2, i, j));
-      x++;
+      ImageSetPixel(img1, x + i, y + j, ImageGetPixel(img2, i, j));
     }
-    x = ogX;
-    y++;
   }
 }
 
@@ -639,21 +634,16 @@ void ImageBlend(Image img1, int x, int y, Image img2, double alpha) { ///
   assert (img2 != NULL);
   assert (ImageValidRect(img1, x, y, img2->width, img2->height));
   // Insert your code here!
-
-  //Save original coordinates 
-  int ogX = x;
   
   //Starting from pos(x,y) we blend img2 pixels with img1 
   //i = x; j = y
+  //start from pos (0,0) in img2 to right bottom corner and use ImageSetPixel
   for(int j =0;j<img2->height;j++) {
     for(int i = 0;i < img2->width;i++) {
-      ImageSetPixel(img1, x, y, (double)ImageGetPixel(img2, i, j) * alpha + (double)ImageGetPixel(img1, x, y) * (1 - alpha) + 0.5);
-      x++;
+      ImageSetPixel(img1, x + i, y + j, (double)ImageGetPixel(img2, i, j) * alpha 
+        + (double)ImageGetPixel(img1, x + i, y + j) * (1 - alpha) + 0.5);
     }
-    x = ogX;
-    y++;
   }
-
 }
 
 /// Compare an image to a subimage of a larger image.
@@ -692,8 +682,10 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
   assert (img2 != NULL);
   // Insert your code here!
 
+  //Go through all pixels in image1
   for(int y = 0; y < img1->height; y++) {
     for(int x = 0; x < img1->width; x++) {
+      //If pixel(x,y) in img1 matches the img2, then img2 top left corner is in pos (x,y) from img1
       if( ImageMatchSubImage(img1, x, y, img2)) {
         *px = x;
         *py = y;
