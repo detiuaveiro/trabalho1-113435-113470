@@ -760,13 +760,10 @@ void ImageBlur(Image img, int dx, int dy) { ///
   }
 
   // Copy blurred pixels to original image
-  for(int y = 0; y < img->height; y++) {
-    for(int x = 0; x < img->width; x++) {
-      ImageSetPixel(img, x, y, ImageGetPixel(blurred, x, y));
-    }
-  }
+  uint8* temp = img->pixel;
+  img->pixel = blurred->pixel;
+  blurred->pixel = temp;
 
   // Destroy blurred image
   ImageDestroy(&blurred);
-
 }
