@@ -674,7 +674,7 @@ int ImageMatchSubImage(Image img1, int x, int y, Image img2) { ///
   //pixel from img2 starting from top left to bottom right
   for(int j =0;j<img2->height;j++) {
     for(int i = 0;i < img2->width;i++) {
-      if (ImageGetPixel(img1,x ,y) != ImageGetPixel(img2, i, j)) {return 0;}
+      if (ImageGetPixel(img1,x ,y) != ImageGetPixel(img2, i, j)) return 0;
       x++;
     }
     x = ogX;
@@ -700,8 +700,7 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
         *px = x;
         *py = y;
         return 1;
-      } ;
-
+      } 
     }
   }
 
@@ -730,15 +729,28 @@ void ImageBlur(Image img, int dx, int dy) { ///
     for(int x = 0; x < img->width; x++) {
       int sum = 0;
       int npixels = 0;
-      // Go through all pixels in the rectangle
-      for(int j = y - dy; j <= y + dy; j++) {
-        for(int i = x - dx; i <= x + dx; i++) {
-          // Check if pixel is inside the image
-          if(ImageValidPos(img, i, j)) {
+      // Check if rectangle is inside the image
+      if (ImageValidRect(img, x - dx, y - dy, x + dx, y + dy)) {
+        // Add all pixels in the rectangle
+        for(int j = y - dy; j <= y + dy; j++) {
+          for(int i = x - dx; i <= x + dx; i++) {
             // Add pixel value to sum
             sum += ImageGetPixel(img, i, j);
             // Increment number of pixels
             npixels++;
+          }
+        }
+      // Go through all pixels in the rectangle
+      } else {
+        for(int j = y - dy; j <= y + dy; j++) {
+          for(int i = x - dx; i <= x + dx; i++) {
+            // Check if pixel is inside the image
+            if(ImageValidPos(img, i, j)) {
+              // Add pixel value to sum
+              sum += ImageGetPixel(img, i, j);
+              // Increment number of pixels
+              npixels++;
+            }
           }
         }
       }
