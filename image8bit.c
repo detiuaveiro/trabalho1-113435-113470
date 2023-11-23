@@ -706,8 +706,7 @@ int ImageLocateSubImage(Image img1, int* px, int* py, Image img2) { ///
 /// The image is changed in-place.
 void ImageBlur(Image img, int dx, int dy) { ///
   // Insert your code here!
-  // Create an image copy
-  Image blurred = ImageCreate(img->width, img->height, img->maxval);
+  int integral[img->width][img->height];
 
   // Assert that dx and dy are valid numbers
   assert(0 <= dx && dx <= PixMax);
@@ -715,45 +714,48 @@ void ImageBlur(Image img, int dx, int dy) { ///
   assert(img != NULL);
 
   // Go through all pixels in the image
-  for(int y = 0; y < img->height; y++) {
-    for(int x = 0; x < img->width; x++) {
-      int sum = 0;
-      int npixels = 0;
-      // Check if rectangle is inside the image
-      if (ImageValidRect(img, x - dx, y - dy, x + dx, y + dy)) {
-        // Add all pixels in the rectangle
-        for(int j = y - dy; j <= y + dy; j++) {
-          for(int i = x - dx; i <= x + dx; i++) {
-            // Add pixel value to sum
-            sum += ImageGetPixel(img, i, j);
-            // Increment number of pixels
-            npixels++;
-          }
-        }
-      // Go through all pixels in the rectangle
-      } else {
-        for(int j = y - dy; j <= y + dy; j++) {
-          for(int i = x - dx; i <= x + dx; i++) {
-            // Check if pixel is inside the image
-            if(ImageValidPos(img, i, j)) {
-              // Add pixel value to sum
-              sum += ImageGetPixel(img, i, j);
-              // Increment number of pixels
-              npixels++;
-            }
-          }
-        }
-      }
-      // Set pixel value to mean of pixels in rectangle
-      ImageSetPixel(blurred, x, y, (sum + npixels / 2) / npixels);
+  // First point of the integral image is the same as the original image
+  integral[0][0] = ImageGetPixel(img, 0, 0);
+
+  // Go through the first line of pixels in the image
+  for (int x = 1; x < img->width; x++) {
+    integral[x][0] = ImageGetPixel(img, x, 0) + integral[x - 1][0];
+  }
+  
+  // Go through the first column of pixels in the image
+  for (int y = 1; y < img->height; y++) {
+    integral[0][y] = ImageGetPixel(img, 0, y) + integral[0][y - 1];
+  }
+
+  for (int y = 1; y < img->height; y++) {
+    for (int x = 1; x < img->width; x++) {
+      integral[x][y] = ImageGetPixel(img, x, y) +
+      integral[x - 1][y] +
+      integral[x][y - 1] -
+      integral[x - 1][y - 1];
     }
   }
 
-  // Copy blurred pixels to original image
-  uint8* temp = img->pixel;
-  img->pixel = blurred->pixel;
-  blurred->pixel = temp;
+  // Calculate the sum of pixels of the image
+  for(int y = 0; y < img->height; y++) {
+    for(int x = 0; x < img->width; x++) {
+        // Get the top left corner of the area
+        int x1 = x - dx < 1 ? 1 : x - dx - 1;
+        int y1 = y - dy < 1 ? 1 : y - dy - 1;
 
-  // Destroy blurred image
-  ImageDestroy(&blurred);
+        // Get the bottom right corner of the area
+        int x2 = x + dx + 1 > img->width ? img->width - 1 : x + dx + 1;
+        int y2 = y + dy + 1 > img->height ? img->height - 1 : y + dy + 1;
+
+        // Calculate the number of pixels in the area
+        int npixels = (x2 - x1 - 1) * (y2 - y1 - 1);
+
+        // Set the pixel to the mean of the area
+        ImageSetPixel(img, x, y,  (double)((integral[x2 - 1][y2 - 1] -
+        integral[x1][y2 - 1] -
+        integral[x2 - 1][y1] +
+        integral[x1][y1])) /
+        npixels + 0.5);
+    }
+  }
 }
