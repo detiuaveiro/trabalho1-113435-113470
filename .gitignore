@@ -4,6 +4,11 @@
 test/
 imageTest
 imageTool
+report/*
+!report/report.pdf
+!report/report.tex
+!report/images
+!report/sections
 
 # Prerequisites
 *.d
