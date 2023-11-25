@@ -11,8 +11,8 @@
 
 // Student authors (fill in below):
 // NMec:  Name:
-// 
-// 
+// 113435 Rúben da Loura Cristóvão Gomes
+// 113470 João Pedro Fonseca Bastos
 // 
 // Date:
 //
@@ -709,24 +709,24 @@ void ImageBlur(Image img, int dx, int dy) { ///
   int integral[img->width][img->height];
 
   // Assert that dx and dy are valid numbers
-  assert(0 <= dx && dx <= PixMax);
+  assert(0 <= dx && 0 <= dy);
   // Assert that image is not null
   assert(img != NULL);
 
-  // Go through all pixels in the image
   // First point of the integral image is the same as the original image
   integral[0][0] = ImageGetPixel(img, 0, 0);
 
-  // Go through the first line of pixels in the image
+  // Define the first line of pixels in the image, to avoid out of bounds
   for (int x = 1; x < img->width; x++) {
     integral[x][0] = ImageGetPixel(img, x, 0) + integral[x - 1][0];
   }
   
-  // Go through the first column of pixels in the image
+  // Define the first row of pixels in the image, to avoid out of bounds
   for (int y = 1; y < img->height; y++) {
     integral[0][y] = ImageGetPixel(img, 0, y) + integral[0][y - 1];
   }
 
+  // Calculate the integral image, starting from (1,1)
   for (int y = 1; y < img->height; y++) {
     for (int x = 1; x < img->width; x++) {
       integral[x][y] = ImageGetPixel(img, x, y) +
