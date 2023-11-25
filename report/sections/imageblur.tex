@@ -18,12 +18,13 @@
     \end{lstlisting}
 
     \par Com o seguinte bloco de código, está a ser atribuído às coordenadas $(x,y)$ do \textit{array} criado anteriormente a soma total dos valores dos pixeis.
-    \par Esta fórmula é visualmente representada na figura abaixo.
+    \par Esta fórmula é visualmente representada na \autoref{fig:summedAreaTable}.
 
     \begin{figure} [H]
         \centering
         \includegraphics[scale=3]{images/sumareas.pdf}
         \caption{Figura ilustrativa do algoritmo \textit{Summed-area table}} 
+        \label{fig:summedAreaTable}
     \end{figure}
 
     \newpage
@@ -50,7 +51,7 @@
     \par O valor de 0.5 é adicionado para que o valor seja arredondado corretamente, já que o valor é do tipo inteiro. \ Também é subtraído o valor de 1 a $x2$ e $y2$, de forma a que o valor seja o correto, já que o \textit{array} começa em $(0,0)$.
 
 \subsubsection{Análise da Complexidade}
-    \par Na seguite tabela, é possível observar a complexidade de cada função, em termos de iterações de ciclos e de operações aritméticas das duas partes do algoritmo.
+    \par Na \autoref{tab:complexidade}, é possível observar a complexidade de cada função, em termos de iterações de ciclos e de operações aritméticas das duas partes do algoritmo.
 
     \begin{table}[H]
         \centering
@@ -77,7 +78,7 @@
 
     \newpage
 
-    \par Como é possível observar na tabela acima, a complexidade das funções é $O((width \times height) \times 2)$, já que o número de iterações é igual ao número de pixeis da imagem. \ A complexidade das operações aritméticas é linear, já que o número de operações é igual ao número de pixeis da imagem. \ Isto resulta em:
+    \par Como é possível observar na \autoref{tab:complexidade}, a complexidade das funções é $O((width \times height) \times 2)$, já que o número de iterações é igual ao número de pixeis da imagem. \ A complexidade das operações aritméticas é linear, já que o número de operações é igual ao número de pixeis da imagem. \ Isto resulta em:
 
     \begin{itemize}
         \item \textbf{Best case} - A imagem ser pequena;
@@ -89,7 +90,7 @@
     \par Como o nome indica, este algoritmo é mais básico, que acaba por ser menos eficiente que o anterior. \ Este algoritmo baseia-se em ir de pixel a pixel da imagem, e de pixel a pixel da área definida pelo retângulo de dimensão $(2dx + 1) \times (2dy + 1)$, verificar se esse pixel se encontra dentro da imagem e calcular a média dos pixeis nessa área dependendo do resultado.
 
 \subsubsection{Análise da complexidade}
-    \par Abaixo é apresentado uma tabela com a complexidade geral do algoritmo, em termos de iterações de ciclos.
+    \par Na \autoref{tab:complexidade2} é apresentado a complexidade geral do algoritmo, em termos de iterações de ciclos.
 
     \begin{table}[H]
         \centering
@@ -114,7 +115,7 @@
         \label{tab:complexidade2}
     \end{table}
 
-    \par Como é possível observar na tabela acima, a complexidade das funções é $O((2dx + 1) \times (2dy + 1) \times w \times h)$, já que o número de iterações está dependente desta vez não só pelo tamanho da imagem, mas também pelo tamanho do fator do \textit{blur}. \ Isto resulta em obter como:
+    \par Como é possível observar na \autoref{tab:complexidade2}, a complexidade das funções é $O((2dx + 1) \times (2dy + 1) \times w \times h)$, já que o número de iterações está dependente desta vez não só pelo tamanho da imagem, mas também pelo tamanho do fator do \textit{blur}. \ Isto resulta em obter como:
 
     \begin{itemize}
         \item \textbf{Best case} - A imagem ser pequena e o fator de blur ser pequeno;
