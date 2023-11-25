@@ -6,3 +6,33 @@
         de diferentes formas. Para além de implementar, é necessário analisá-las para garantir um 
         código mais eficiente. Para esse propósito, foram analisados os algoritmos das funções
         ImageLocateSubImage() e ImageBlur().
+
+    \par O ficheiro image8bit.c contêm múltiplas funções para manipular imagens PGM(Portable Gray Map):
+
+    \begin{itemize}
+        \item \textbf{ImageValidPos} - Analisa se uma da posição corresponde a um píxel da imagem referida
+            encontra-se fora da mesma
+        \item \textbf{ImageValidRect} - Analisa se as dimensões correspondentes a um retângulo se encontram
+            dentro da imagem ou não
+        \item \textbf{ImageGetPixel e ImageSetPixel} - Responsáveis por obter o indíce do array de pixeis
+            na respetiva posição e alterar esse valor por um outro.
+        \item \textbf{ImageNegative} - Inverte os valores de cada pixel $(maxval - pixelValue)$
+        \item \textbf{ImageThreshold} - Converte os valores de cada píxel para 0 ou para maxval
+            se o mesmo for inferior ou superior ou igual respetivamente
+        \item \textbf{ImageBrighten} - Converte os valores de cada píxel multiplicando por um fator
+        \item \textbf{ImageRotate} - Cria uma imagem nova com os valores dos pixeis da original
+            trocada de modo a obter uma imagem rodada 90º no sentido contrário dos ponteiros do relógio
+        \item \textbf{ImageMirror} - Devolve uma imagem espelhada horizontalmente
+        \item \textbf{ImageCrop} - Recorta uma parte da imagem e devolve-a noutra imagem
+        \item \textbf{ImagePaste} - Insere uma imagem por cima de outra, certeficando que
+            a imagem a inserir seja inferior à imagem onde será inserida
+        \item \textbf{ImageBlend} - Junta 2 imagens, certifcando que a que se vai juntar seja 
+         inferior à outra e é aplicado um valor $alpha$ entre 0.0 a 1.0
+        \item \textbf{ImageMatchSubImage} - Compara se a partir de uma dada posição (x,y) 
+            da imagem1 a imagem2 é igual
+        \item \textbf{ImagemLocateSubImage} - Chama a função ImageMatchSubImage em cada píxel da
+            imagem1 para comparar e define 2 ponteiros(px e py) para esse mesmo píxel
+        \item \textbf{ImageBlur} - Aplica um filtro na imagem para criar uma desfocada
+    \end{itemize}
+
+    

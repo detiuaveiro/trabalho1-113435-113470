@@ -5,7 +5,7 @@
         de modo a garantir que a imagem2 é, de facto, igual a uma parte da imagem1.
 
 \subsection{Eficiência computacional da ImageLocateSubImage()}
-    \par Para analisar a sua eficiência computacional, foi registado numa tabela \autoref{tab:locate} o 
+    \par Para analisar a sua eficiência computacional, foi registado numa \autoref{tab:locate} o 
     número de comparações envolvendo uma sequência de testes com diferentes imagens. 
 
 \begin{center}
@@ -32,11 +32,11 @@
 
 \newpage 
 
+\par Com base na \autoref{tab:locate}, podemos afirmar sobre a sua comeplexidade:
 \begin{itemize}
-    \item \textbf{Best Case:} Imagens com pouca resolução e a imagem2 está localizada no pixel (0,0)
+    \item \textbf{Best Case:} Imagens com pouca resolução e a imagem2 está localizada no pixel (0,0) $O(1)$
     \item \textbf{Average case:} Imagem tem pouca resolução e a imagem2 não se encontra localizada nela
-    \item \textbf{Worst case:} Imagens com grande resolução e a imagem 2 não se encontra localizada nela
-        ou a imagem2 é uma porção pequena do canto inferior direito da imagem2
+    \item \textbf{Worst case:} Imagens com grande resolução e a imagem 2 não se encontra localizada $O(width * height)$
 \end{itemize}
 
 \subsection{Funcionamento da ImageLocateSubImage()}
@@ -47,7 +47,7 @@
     \begin{figure} [H]
         \centering
         \includegraphics[scale=0.25]{images/Locate_Function.pdf}
-        \caption{Figura 1: Figura representativa do funcionamento da ImageLocateSubImage()}
+        \caption{Figura representativa do funcionamento da ImageLocateSubImage()}
         \label{fig:locate}
     \end{figure}
 

@@ -20,7 +20,7 @@
 \usepackage{soul}
 
 
-\geometry{a4paper,inner=20mm,outer=20mm,top=15mm}
+\geometry{a4paper,inner=20mm,outer=20mm,top=15mm, bottom=15mm}
 
 % Define colors
 \definecolor{dkgray}{rgb}{0.37,0.37,0.37}
@@ -28,8 +28,10 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{codegray}{RGB}{234, 234, 234}
 
-\setlength{\parskip}{0.em plus 0.1em minus 0.2em}
+\setlength{\parskip}{0.5em plus 0.1em minus 0.2em}
 \setlength{\headheight}{134pt}
+
+\fontsize{12}{12}\selectfont
 
 \lstset{frame=tb,
   language=C,
@@ -48,6 +50,20 @@
   tabsize=4
 }
 
+\pagestyle{fancy}
+
+% Header
+\fancyhead[C]{
+    \begin{center}
+        \includegraphics{images/ua}\\
+        \vspace{2mm}
+        \textbf{{\LARGE \title}}\\
+        \vspace{2mm}
+    \end{center}
+}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage { -} \PreviousTotalPages}
+
 % Document
 \begin{document}
 
@@ -55,42 +71,28 @@
     \def\title{\textbf{RELATÓRIO DE ANÁLISE DE COMPLEXIDADE}}
     \def\authorjp{João Bastos (113470)}
     \def\authorrg{Rúben Gomes (113435)}
-    \def\authors{João Bastos (113470), Rúben Gomes(113435)}
+    \def\authors{João Bastos (113470) e Rúben Gomes(113435)}
     \def\contacts{(113470) joaop.bastos@ua.pt, (113435) rlcg@ua.pt}
     \def\department{Departamento de Eletrónica, Telecomunicações e Informática}
     \def\university{Universidade de Aveiro}
-
-    \pagestyle{fancy}
-    
-
-    % Clear header and footer
-    \fancyhead{}\fancyfoot{}
-
-    % Header
-    \fancyhead[C]{
-        \begin{center}
-            \includegraphics{images/ua}\\
-            \vspace{2mm}
-            \textbf{{\LARGE \title}}\\
-            \vspace{2mm}
-            % \large Trabalho realizado por: \authors.\\
-        \end{center}
-    }
-
-    \fancyfoot[R]{\thepage}
     
     \input{sections/introduction.tex}
     
+    \newpage
+
     \input{sections/imagelocate.tex}
 
     \newpage
 
-    \input{sections/imageblur.tex}   
+    \input{sections/imageblur.tex}
 
+    \newpage
 
+    \input{sections/conclusion.tex}
 
-
-
+    \begin{flushright}
+        \today
+    \end{flushright}
 
 
 \end{document}

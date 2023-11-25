@@ -1,5 +1,4 @@
 
-\fontsize{12}{12}\selectfont
 \section{Image Blur}\label{sec:imageblur}
     \par A seguinte função visa a implementar um filtro de imagem de \textit{blur}, em que é aplicado um filtro da média de pixeis num dado retângulo de dimensão $(2dx + 1) \times (2dy + 1)$. \ Para tal, foram considerados dois algoritmos, detalhados nas subsecções seguintes.
 
@@ -115,16 +114,10 @@
         \label{tab:complexidade2}
     \end{table}
 
-    \par Como é possível observar na tabela acima, a complexidade das funções é $O((2dx + 1) \times (2dy + 1) \times w \times h)$, já que o número de iterações está dependente desta vez não só pelo tamanho da imagem, como também pelo tamanho do fator do blur. \ Isto resulta em:
+    \par Como é possível observar na tabela acima, a complexidade das funções é $O((2dx + 1) \times (2dy + 1) \times w \times h)$, já que o número de iterações está dependente desta vez não só pelo tamanho da imagem, mas também pelo tamanho do fator do \textit{blur}. \ Isto resulta em obter como:
 
     \begin{itemize}
         \item \textbf{Best case} - A imagem ser pequena e o fator de blur ser pequeno;
         \item \textbf{Average case} - Um \textit{balance} entre o tamanho da imagem e o fator de blur;
         \item \textbf{Worst case} - A imagem ser grande e o fator de blur ser grande.
     \end{itemize}
-
-\subsection{Conclusão}
-    \par
-
-
-
